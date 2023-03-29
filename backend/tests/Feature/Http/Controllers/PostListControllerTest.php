@@ -3,8 +3,6 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PostListControllerTest extends TestCase
@@ -21,7 +19,10 @@ class PostListControllerTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('ブログのタイトル1')
-            ->assertSee('ブログのタイトル2');
+            ->assertSee('ブログのタイトル2')
+            ->assertSee($post1->user->name)
+            ->assertSee($post2->user->name);
+
 
         // $post1 = Post::factory()->create();
         // $post2 = Post::factory()->create();
