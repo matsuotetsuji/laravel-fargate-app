@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class PostListControllerTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * @test
      * Show blog list on Top Page
@@ -31,5 +30,19 @@ class PostListControllerTest extends TestCase
         //     ->assertOk()
         //     ->assertSee($post1->title)
         //     ->assertSee($post2->title);
+    }
+
+    /**
+     * @test
+     * watch factory
+     */
+    function factoryの観察()
+    {
+        // post = Post::factory()->create();
+        // dump($post->toArray());
+
+        // dump(User::get()->toArray());
+
+        $this->assertTrue(true);
     }
 }
