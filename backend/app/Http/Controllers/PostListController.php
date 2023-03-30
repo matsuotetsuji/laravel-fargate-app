@@ -9,7 +9,13 @@ class PostListController extends Controller
 {
     public function index()
     {
-        $posts = Post::withCount('comments')->get();
+        $posts = Post::query()
+            ->with('user')
+            ->orderByDesc('comments_count')
+            ->withCount('comments')
+            ->get();
+            // n+1問題の対応
+            // https://readouble.com/laravel/9.x/ja/eloquent-relationships.html
 
         return view('index', compact('posts'));
     }
