@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PostListController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('', [PostController::class, 'index']);
+Route::get('posts/{post}', [PostController::class, 'show'])
+    ->name('posts.show')
+    ->whereNumber('post');
 
-/**
+/**ß
 Route::get('/', function () {
     return view('welcome');
 });

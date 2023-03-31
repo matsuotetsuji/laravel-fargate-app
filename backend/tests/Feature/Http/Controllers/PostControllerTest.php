@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\Post;
 use Tests\TestCase;
 
-class PostListControllerTest extends TestCase
+class PostControllerTest extends TestCase
 {
     /**
      * @test
@@ -57,6 +57,27 @@ class PostListControllerTest extends TestCase
         $this->get('/')
             ->assertDontSee('これは非公開のブログです')
             ->assertSee('これは公開済みのブログです');
+    }
+
+    /**
+     * @test
+     */
+    function ブログの詳細画面を表示させる()
+    {
+        $post = Post::factory()->create();
+
+        $this->get('posts/'.$post->id)
+            ->assertOk()
+            ->assertSee($post->title)
+            ->assertSee($post->user->name);
+    }
+
+    /**
+     * @test
+     */
+    function ブログで非公開の詳細画面は表示されない()
+    {
+
     }
 
     /**
