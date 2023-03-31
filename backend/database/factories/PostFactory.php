@@ -34,4 +34,14 @@ class PostFactory extends Factory
             ];
         });
     }
+
+    public function closed()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => Post::CLOSED,
+            ];
+        });
+    }
+
 }
