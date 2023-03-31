@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', [PostListController::class, 'index']);
+Route::get('', [PostController::class, 'index']);
 
 /**
 Route::get('/', function () {
