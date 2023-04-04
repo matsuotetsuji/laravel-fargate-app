@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class PostControllerTest extends TestCase
@@ -77,7 +78,10 @@ class PostControllerTest extends TestCase
      */
     function ブログで非公開の詳細画面は表示されない()
     {
+        $post = Post::factory()->closed()->create();
 
+        $this->get('posts/'.$post->id)
+            ->assertForbidden();
     }
 
     /**
@@ -93,4 +97,38 @@ class PostControllerTest extends TestCase
 
         $this->assertTrue(true);
     }
+
+    /*
+    * @test
+    */
+    function ブログで非公開時にTrueを返し、公開時にfalseを返す()
+    {
+        $open = Post::factory()->create();
+
+        $closed = Post::factory()->closed()->create();
+
+        $this->assertFalse($open->isClosed());
+        $this->assertTrue($closed->isClosed());
+    }
+
+    /**
+     * @test
+     */
+    function クリスマスの日はメリークリスマスと表示される()
+    {
+        $post = Post::factory()->create();
+        Carbon::setTestNow('2020-12-24');
+
+        $this->get('posts/'.$post->id)
+            ->assertOk()
+            ->assertDontSee('メリークリスマス');
+
+        Carbon::setTestNow('2020-12-25');
+
+        $this->get('posts/'.$post->id)
+            ->assertOk()
+            ->assertSee('メリークリスマス');
+
+    }
+
 }
