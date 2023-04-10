@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
+use function PHPUnit\Framework\assertInfinite;
+
 class SignupControllerTest extends TestCase
 {
     /** @test */
@@ -46,5 +48,19 @@ class SignupControllerTest extends TestCase
         // $this->assertNotNull($user);
 
         $this->assertTrue(Hash::check('hogehoge', $user->password));
+    }
+
+    /** @test */
+    function 不正なデータではユーザ登録できない()
+    {
+        $url = 'signup';
+
+        // $this->post($url, [])
+        //     ->assertRedirect();
+
+        $this->post($url, ['name' => ''])->assertInvalid(['name' => '指定']);
+
+        $this->post($url, ['name' => str_repeat('あ', 21)])->assertInvalid(['name' => '20文字']);
+        $this->post($url, ['name' => str_repeat('あ', 20)])->assertvalid('name');
     }
 }
