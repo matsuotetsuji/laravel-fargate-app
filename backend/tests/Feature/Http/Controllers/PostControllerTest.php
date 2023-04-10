@@ -68,20 +68,10 @@ class PostControllerTest extends TestCase
     {
         $post = Post::factory()->create();
 
-        Comment::factory()->create([
-            'created_at' => now()->sub('2 days'),
-            'name' => 'コメント太郎',
-            'post_id' => $post->id,
-        ]);
-        Comment::factory()->create([
-            'created_at' => now()->sub('3 days'),
-            'name' => 'コメント次郎',
-            'post_id' => $post->id,
-        ]);
-        Comment::factory()->create([
-            'created_at' => now()->sub('1 days'),
-            'name' => 'コメント三郎',
-            'post_id' => $post->id,
+        [$commnent1, $commnent2, $comment3] = Comment::factory()->createMany([
+            ['created_at' => now()->sub('2 days'), 'name' => 'コメント太郎', 'post_id' => $post->id],
+            ['created_at' => now()->sub('3 days'), 'name' => 'コメント次郎', 'post_id' => $post->id],
+            ['created_at' => now()->sub('1 days'), 'name' => 'コメント三郎', 'post_id' => $post->id],
         ]);
 
         $this->get('posts/'.$post->id)
