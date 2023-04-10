@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +20,14 @@ Route::get('posts/{post}', [PostController::class, 'show'])
     ->name('posts.show')
     ->whereNumber('post');
 
+
+Route::get('signup', [SignupController::class, 'index']);
+Route::post('signup', [SignupController::class, 'store']);
+
 /**ß
 Route::get('/', function () {
     return view('welcome');
 });
 */
+
+
