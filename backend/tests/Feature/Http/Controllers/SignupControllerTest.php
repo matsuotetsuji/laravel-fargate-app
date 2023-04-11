@@ -57,8 +57,11 @@ class SignupControllerTest extends TestCase
 
         User::factory()->create(['email' => 'aaa@bbb.net']);
 
-        // $this->post($url, [])
-        //     ->assertRedirect();
+        //$this->get('signup');
+
+        $this->post($url, [])
+            ->assertRedirect('');
+        //     ->assertRedirect('signup');
 
         app()->setLocale('testing');
 
