@@ -58,9 +58,12 @@ class SignupControllerTest extends TestCase
         // $this->post($url, [])
         //     ->assertRedirect();
 
-        $this->post($url, ['name' => ''])->assertInvalid(['name' => '指定']);
+        // app()->setLocale('ja');
 
+        $this->post($url, ['name' => ''])->assertInvalid(['name' => '指定']);
         $this->post($url, ['name' => str_repeat('あ', 21)])->assertInvalid(['name' => '20文字']);
         $this->post($url, ['name' => str_repeat('あ', 20)])->assertvalid('name');
+
+
     }
 }
