@@ -38,7 +38,7 @@ class SignupControllerTest extends TestCase
         // validData = User::factory()->validData();
 
         $this->post('signup', $validData)
-            ->assertOk();
+            ->assertRedirect('mypage/posts');
 
         unset($validData['password']);
 
@@ -48,6 +48,8 @@ class SignupControllerTest extends TestCase
         // $this->assertNotNull($user);
 
         $this->assertTrue(Hash::check('hogehoge', $user->password));
+
+        $this->assertAuthenticatedAs($user);
     }
 
     /** @test */
@@ -65,6 +67,8 @@ class SignupControllerTest extends TestCase
 
         app()->setLocale('testing');
 
+        dump(app()->getLocale());
+
         $this->post($url, ['name' => ''])->assertInvalid(['name' => 'required']);
         $this->post($url, ['name' => str_repeat('あ', 21)])->assertInvalid(['name' => 'max']);
         $this->post($url, ['name' => str_repeat('あ', 20)])->assertvalid('name');
@@ -77,5 +81,13 @@ class SignupControllerTest extends TestCase
         $this->post($url, ['password' => ''])->assertInvalid(['password' => 'required']);
         $this->post($url, ['password' => 'abcd123'])->assertInvalid(['password' => 'min']);
         $this->post($url, ['password' => 'abcd1234'])->assertvalid(['password' => 'min']);
+    }
+
+    /** @test */
+    function hogebar()
+    {
+        dump(app()->getLocale());
+
+        $this->assertTrue(true);
     }
 }
