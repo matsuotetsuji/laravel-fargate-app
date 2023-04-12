@@ -21,10 +21,10 @@ class UserLoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attmpt($credentials)){
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect('mypate/posts');
+            return redirect('mypage/posts');
         }
     }
 }

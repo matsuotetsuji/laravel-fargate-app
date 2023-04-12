@@ -41,6 +41,22 @@ class UserLoginControllerTest extends TestCase
     /**
      * @test
      */
+    // function ログインできる()
+    // {
+    //     $user = User::factory()->create([
+    //         'email' => 'aaa@bbb.net',
+    //         'password' => \Hash::make('abcd1234'),
+    //     ]);
+
+    //     $this->post('mypage/login',[
+    //         'email' => 'aaa@bbb.net',
+    //         'password' => 'abce1234'
+    //     ])->assertRedirect('mypage/posts');
+
+    //     $this->assertAuthenticatedAs($user);
+    // }
+
+    /** @test */
     function ログインできる()
     {
         $user = User::factory()->create([
@@ -48,11 +64,27 @@ class UserLoginControllerTest extends TestCase
             'password' => \Hash::make('abcd1234'),
         ]);
 
-        $this->post('myapage/login',[
+        $this->post('mypage/login', [
             'email' => 'aaa@bbb.net',
-            'password' => 'abce1234'
+            'password' => 'abcd1234',
         ])->assertRedirect('mypage/posts');
 
         $this->assertAuthenticatedAs($user);
+    }
+
+    /**
+     * @test
+     */
+    function IDを間違えているのでログインできない()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    function passwordを間違えているのでログインできない()
+    {
+
     }
 }
