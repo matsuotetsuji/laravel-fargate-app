@@ -19,6 +19,7 @@ class PostManageControllerTest extends TestCase
 
         $this->get('mypage/posts')->assertRedirect($loginUrl);
         $this->get('mypage/posts/create')->assertRedirect($loginUrl);
+        $this->post('mypage/posts/create')->assertRedirect($loginUrl);
     }
 
     /**
@@ -57,7 +58,7 @@ class PostManageControllerTest extends TestCase
      */
     function マイページ、ブログを新規登録できる、公開の場合()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         [$taro, $jiro, $me] = User::factory(3)->create();
 
@@ -86,6 +87,25 @@ class PostManageControllerTest extends TestCase
      */
     function マイページ、ブログを新規登録できる、非公開の場合()
     {
+        // $this->markTestIncomplete();
+        [$taro, $jiro, $me] = User::factory(3)->create();
+
+        $this->login($me);
+
+        $validData = [
+            'title' => '私のブログタイトル',
+            'body' => '私のブログ本文',
+            // 'status' => '1',
+        ];
+
+        $this->post('mypage/posts/create', $validData);
+
+        $post = Post::first();
+
+        $this->assertDatabaseHas('posts', array_merge($validData, [
+            'user_id' => $me->id,
+            'status'  => 0,
+        ]));
 
     }
 
