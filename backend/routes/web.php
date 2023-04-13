@@ -34,12 +34,8 @@ Route::middleware('auth')->group(function(){
     Route::get('mypage/posts', [PostManageController::class, 'index'])->name('mypage.posts');
     Route::get('mypage/posts/create', [PostManageController::class, 'create']);
     Route::post('mypage/posts/create', [PostManageController::class, 'store']);
+    Route::get('mypage/posts/edit/{post}', [PostManageController::class, 'edit'])->name('mypage.posts.edit');
 });
 
-/**ß
-Route::get('/', function () {
-    return view('welcome');
-});
-*/
 
 
