@@ -87,7 +87,6 @@ class PostManageControllerTest extends TestCase
      */
     function マイページ、ブログを新規登録できる、非公開の場合()
     {
-        // $this->markTestIncomplete();
         [$taro, $jiro, $me] = User::factory(3)->create();
 
         $this->login($me);
@@ -114,9 +113,51 @@ class PostManageControllerTest extends TestCase
      */
     function マイページ、ブログの登録時の入力チェック()
     {
+        $url = 'mypage/posts/create';
+
+        $this->login();
+
+        $this->from($url)->post($url, [])
+            ->assertRedirect($url);
+
+        app()->setLocale('testing');
+
+        $this->post($url, ['title' => ''])->assertInvalid(['title' => 'required']);
+        $this->post($url, ['title' => str_repeat('a', 256)])->assertInvalid(['title' => 'max']);
+        $this->post($url, ['title' => str_repeat('a', 255)])->assertvalid('title');
+        $this->post($url, ['body' => ''])->assertInvalid(['body' => 'required']);
+    }
+
+    /**
+     * @test
+     */
+    function 自分のブログの編集画面は開ける()
+    {
 
     }
+
+    /**
+     * @test
+     */
+    function のブログの編集画面は開ける()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    function 自分のブログの編集画面は開ける()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    function 自分のブログの編集画面は開ける()
+    {
+
+    }
+
 }
-
-
-
