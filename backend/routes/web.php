@@ -21,6 +21,7 @@ Route::get('', [PostController::class, 'index']);
 Route::get('posts/{post}', [PostController::class, 'show'])
     ->name('posts.show')
     ->whereNumber('post');
+    // ->middleware(PostShowLimit::class);
 
 
 Route::get('signup', [SignupController::class, 'index']);

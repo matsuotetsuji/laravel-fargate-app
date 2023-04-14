@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Http\Middleware\PostShowLimit;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Carbon;
@@ -66,6 +67,8 @@ class PostControllerTest extends TestCase
      */
     function ブログの詳細画面を表示でき、コメントが古い順に表示される()
     {
+        // $this->withoutMiddleware(PostShowLimit::class);
+
         $post = Post::factory()->create();
 
         [$commnent1, $commnent2, $comment3] = Comment::factory()->createMany([
