@@ -19,8 +19,9 @@ class PostManageControllerTest extends TestCase
 
         $this->get('mypage/posts')->assertRedirect($loginUrl);
         $this->get('mypage/posts/create')->assertRedirect($loginUrl);
-        $this->post('mypage/posts/create')->assertRedirect($loginUrl);
+        $this->post('mypage/posts/create', [])->assertRedirect($loginUrl);
         $this->get('mypage/posts/edit/1')->assertRedirect($loginUrl);
+        $this->post('mypage/posts/edit/1', [])->assertRedirect($loginUrl);
     }
 
     /**
@@ -153,6 +154,47 @@ class PostManageControllerTest extends TestCase
 
         $this->get('mypage/posts/edit/'.$post->id)
             ->assertForbidden();
+    }
+
+    /**
+     * @test
+     */
+    function 自分のブログは変更できる()
+    {
+        $validData = [
+            'title' => '新タイトル',
+            'body'  => '新本文',
+            'status'=> '1',
+        ];
+
+        $post = Post::factory()->create();
+
+        $this->login($post->user);
+
+        $this->post('mypage/posts/edit/'.$post->id, $validData)
+            ->assertRedirect('mypage/posts/edit/'.$post->id);
+
+        $this->get('mypage/posts/edit/'.$post->id)
+            ->assertSee('ブログを更新しました');
+
+        // DBに登録されている事は確認したが、新規で追加されたかもしれない。なので、不完全と言えば、不完全
+        $this->assertDatabaseHas('posts', $validData);
+
+        $this->assertCount(1, Post::all());
+        $this->assertSame(1, Post::count());
+
+
+        // 項目が少ない時は fresh()を使って
+        $this->assertSame('新タイトル', $post->fresh()->title);
+        $this->assertSame('新本文', $post->fresh()->body);
+        $this->assertSame(1, $post->fresh()->status);
+
+        // 項目が多い時は refresh()を使って
+        $post->refresh();
+        $this->assertSame('新タイトル', $post->title);
+        $this->assertSame('新本文', $post->body);
+        $this->assertSame(1, $post->status);
+
     }
 
     /**
