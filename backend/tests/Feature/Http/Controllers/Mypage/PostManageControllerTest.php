@@ -251,7 +251,14 @@ class PostManageControllerTest extends TestCase
      */
     function 他人様のブログは削除できない()
     {
+        $post = Post::factory()->create();
 
+        $this->login();
+
+        $this->delete('mypage/posts/delete/'.$post->id)
+            ->assertForbidden();
+
+        $this->assertModelExists($post);
     }
 
 }
