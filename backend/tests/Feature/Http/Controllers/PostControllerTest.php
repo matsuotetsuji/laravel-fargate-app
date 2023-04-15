@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Actions\StrRandom;
 use App\Http\Middleware\PostShowLimit;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Carbon;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class PostControllerTest extends TestCase
@@ -140,6 +142,41 @@ class PostControllerTest extends TestCase
         $this->get('posts/'.$post->id)
             ->assertOk()
             ->assertSee('メリークリスマス');
+
+    }
+
+    /**
+     * @test
+     */
+    function ブログの詳細画面がランダムな文字列が表示されている()
+    {
+        // ファサードではなくオブジェクト
+        // $random = \Str::random(10);
+
+        // $this->instance(
+        //     StrRandom::class,
+
+        // )
+
+        // $this->mock(StrRandom::class, function (MockInterface $mock){
+        //     $mock->shouldReceive('get')->once()->with(10)->andReturn('HELLOWORLD');
+        // });
+
+        // $post = Post::factory()->create();
+
+        // $this->get('post/'.$post->id)
+        //     ->assertOk()
+        //     ->assertSee('HELLOWORLD');
+
+        $this->mock(StrRandom::class, function (MockInterface $mock) {
+            $mock->shouldReceive('get')->once()->with(10)->andReturn('HELLOWORLD');
+        });
+
+        $post = Post::factory()->create();
+
+        $this->get('posts/'.$post->id)
+            ->assertOk()
+            ->assertSee('HELLOWORLD');
 
     }
 
