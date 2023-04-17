@@ -7,6 +7,7 @@ use App\Http\Middleware\PostShowLimit;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Carbon;
+use Mockery;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -168,9 +169,15 @@ class PostControllerTest extends TestCase
         //     ->assertOk()
         //     ->assertSee('HELLOWORLD');
 
-        $this->mock(StrRandom::class, function (MockInterface $mock) {
-            $mock->shouldReceive('get')->once()->with(10)->andReturn('HELLOWORLD');
-        });
+        // $this->mock(StrRandom::class, function (MockInterface $mock) {
+        //     $mock->shouldReceive('get')->once()->with(10)->andReturn('HELLOWORLD');
+        // });
+
+        $mock = Mockery::mock(StrRandom::class);
+
+        $mock->shouldReceive('get')->once()->with(10)->andReturn('HELLOWORLD');
+
+        $this->instance(StrRandom::class, $mock);
 
         $post = Post::factory()->create();
 
